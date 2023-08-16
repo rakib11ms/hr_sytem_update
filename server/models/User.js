@@ -17,10 +17,19 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Designation',
   },
+  supervisor: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    default: null
+  },
   image: {
     type: String,
     default: null
 
+  },
+  cv_file:{
+    type:String,
+    default:null
   },
   present_address: {
     type: String,
@@ -29,8 +38,16 @@ const userSchema = new mongoose.Schema({
   permanent_address: {
     type: String,
     default: null
+  },
+  nid:{
+    type:String,
+    required:true
   }
   ,
+  university:{
+    type:String,
+    default:null
+  },
   isVerified: {
     type: Boolean,
     default: true // default value for the field (optional)
