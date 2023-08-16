@@ -1,0 +1,19 @@
+hr->register full name,email,password,confirm_password,cv_bank,image,designation,present_add,
+permanent_add,education(all info- ssc,hsc,bsc,msc)->education dropdown (include cgpa),institute,
+board,nid,department,supervisor,role(hidden).(register)
+login->hr->permission 
+user_profile and hr_both update
+
+hr->all employee lists ->cannot delete/inactive->requisition for head of dept for approval
+
+supervisor->team assign includes (project name,start,end date,deadline,spint(name,deadline,
+overview->head of dept will also see(push,db notification)(team and supervisor will see individual project kpi status 
+like bar/chart)
+)).cron job (email,db notification) for those who is poor performance .
+
+ssp-> everyone (leave, attendance) single every user page,office (purpose) request chain 
+of command dept heads will approve this.(web push,db notification)
+
+
+
+
