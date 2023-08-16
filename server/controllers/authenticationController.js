@@ -1,5 +1,17 @@
 const User = require('../models/User');
+const Role = require('../models/Role');
+const Permission = require('../models/Permission');
+const RoleHasPermission = require('../models/RoleHasPermission');
+const Designation = require('../models/Designation');
 const { validationResult } = require('express-validator');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
+
+const createToken = (user) => {
+    return jwt.sign(user, process.env.SECRET, { expiresIn: '3d' })
+}
+
 
 const saveUser = async (req, res) => {
     const { name, email, password, resetToken, resetTokenExpiration, designation, present_address, permanent_address } = req.body;
@@ -9,7 +21,11 @@ const saveUser = async (req, res) => {
     } else {
         console.log('No file uploaded');
     }
+    const password1 = req.body.password;
 
+    const role = await Role.findOne({ _id: req.body.role }, { name: 1 });
+
+    // console.log('role name',role_name.name)
     try {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -22,12 +38,19 @@ const saveUser = async (req, res) => {
             return res.status(400).json({ error: 'Email already registered' });
         }
 
+        const hashedPassword = await bcrypt.hash(password1, 10);
+        // console.log('hased', hashedPassword)
         const data = {
             name: req.body.name,
             email: req.body.email,
-            password: req.body.password,
+            password: hashedPassword,
+            resetToken: '',
+            resetTokenExpiration: '',
+            role: role._id,
+            designation: req.body.designation,
             image: '',
-
+            present_address: req.body.present_address,
+            permanent_address: req.body.permanent_address
         }
 
         const user = new User(data);
@@ -37,6 +60,8 @@ const saveUser = async (req, res) => {
             user.image = req.file.filename;
         }
         await user.save();
+        const token = createToken(data);
+
         res.json(
             {
                 status: 200,
@@ -49,6 +74,7 @@ const saveUser = async (req, res) => {
 
     }
 }
+
 
 
 module.exports = { saveUser }

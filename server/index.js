@@ -6,8 +6,23 @@ const cors = require('cors')
 app.use(cors());
 const allRoutes=require('./allRoutes');
 
+const bodyParser=require('body-parser');
+
+// create application/json parser
+app.use(bodyParser.json());
+
+// create application/x-www-form-urlencoded parser
+// var urlencodedParser = bodyParser.urlencoded({ extended: false })
+app.use(bodyParser.urlencoded({ extended: false  }));
+
 
 app.use('/api/',allRoutes);
+
+// app.get('/',(req,res)=>{
+//     return res.json({
+//         message:"hello data"
+//     })
+// })
 
 mongoose.connect(process.env.mongoUri).then(()=>{
     app.listen(process.env.PORT,()=>{
