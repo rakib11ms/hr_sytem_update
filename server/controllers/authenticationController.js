@@ -14,16 +14,27 @@ const createToken = (user) => {
 
 
 const saveUser = async (req, res) => {
-    const { name, email, password, resetToken, resetTokenExpiration, designation, present_address, permanent_address } = req.body;
     console.log('body', req.body)
-    if (req.file) {
-        console.log(req.file);
+    ;
+    const email=req.body.email;
+    if (req.files) {
+        if (req.files['image']) {
+            console.log('Image uploaded:', req.files['image'][0]);
+        } else {
+            console.log('No image uploaded');
+        }
+
+        if (req.files['cv_file']) {
+            console.log('CV file uploaded:', req.files['cv_file'][0]);
+        } else {
+            console.log('No CV file uploaded');
+        }
     } else {
         console.log('No file uploaded');
     }
     const password1 = req.body.password;
 
-    const role = await Role.findOne({ _id: req.body.role }, { name: 1 });
+    // const role = await Role.findOne({ _id: req.body.role }, { name: 1 });
 
     // console.log('role name',role_name.name)
     try {
@@ -46,18 +57,27 @@ const saveUser = async (req, res) => {
             password: hashedPassword,
             resetToken: '',
             resetTokenExpiration: '',
-            role: role._id,
+            role: req.body.role,
             designation: req.body.designation,
             image: '',
             present_address: req.body.present_address,
-            permanent_address: req.body.permanent_address
+            permanent_address: req.body.permanent_address,
+            designation:'e',
+            supervisor:'e',
+            cv_file:'',
+            nid:'2',
+            university:'2',
         }
 
         const user = new User(data);
         // If the image file is uploaded, assign the file name to the 'image' field
-        if (req.file) {
+        if (req.files['image'][0]) {
             // console.log('file ache', req.file)
-            user.image = req.file.filename;
+            user.image = req.files['image'][0].filename;
+        }
+        if (req.files['cv_file'][0]) {
+            // console.log('file ache', req.file)
+            user.cv_file = req.files['cv_file'][0].filename;
         }
         await user.save();
         const token = createToken(data);

@@ -2,7 +2,8 @@ const { validationResult } = require('express-validator');
 const Department = require('../models/Department');
 
 const createDepartment = async (req, res) => {
-    const { name } = req.body;
+    const  name  = req.body.name;
+    console.log('department',req.body)
 
     try {
         const errors = validationResult(req);
@@ -10,7 +11,7 @@ const createDepartment = async (req, res) => {
             return res.status(400).json({ errors: errors.array() });
         }
         const data = {
-            name: name,
+            name:name,
         }
 
         const department = new Department(data);

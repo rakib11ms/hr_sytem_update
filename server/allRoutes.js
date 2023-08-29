@@ -31,7 +31,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-router.post('/save-user', upload.single('image'), saveUser);
+router.post('/save-user', upload.fields([{name:'image'},{name:'cv_file'}]), saveUser);
 
 
 

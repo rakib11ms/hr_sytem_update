@@ -10,10 +10,8 @@ const bodyParser=require('body-parser');
 
 // create application/json parser
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }))
 
-// create application/x-www-form-urlencoded parser
-// var urlencodedParser = bodyParser.urlencoded({ extended: false })
-app.use(bodyParser.urlencoded({ extended: false  }));
 
 
 app.use('/api/',allRoutes);
